@@ -1,5 +1,11 @@
 const router = require('express').Router();
-const { index, show,create, remove, update  } = require('../controllers/contacts');
+const {
+  index,
+  show,
+  create,
+  remove,
+  update,
+} = require('../controllers/contacts');
 
 router.get('/', index);
 router.get('/:id', show);
