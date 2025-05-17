@@ -4,6 +4,7 @@
   "description": "week 1 - first nodejs project",
   "main": "server.js",
   "scripts": {
+    "prestart": "node swagger.js",
     "start": "node server.js"
   },
   "repository": {
