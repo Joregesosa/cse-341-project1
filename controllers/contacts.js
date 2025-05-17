@@ -1,33 +1,88 @@
-const mongodb = require('../data/database');
-const ObjectId = require('mongodb').ObjectId;
+ const {
+  getAll,
+  getSingle,
+  insertData,
+  updateData,
+  deleteData,
+} = require('../data/database');
 
-const getAll = async (req, res) => {
-    const result = await mongodb.getDatabase().db().collection('contacts').find();
-    result.toArray()
-        .then((contacts) => {
-            res.setHeader('Content-Type', 'application/json');
-            res.status(200).json(contacts);
-        })
-        .catch((err) => {
-            res.status(500).json({ message: 'Could not find contacts.' });
-        });
-}
+const index = async (req, res) => {
+  try {
+    //#swagger.tags = ['Contacts']
+    const result = await getAll('contacts');
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-const getSingle = async (req, res) => {
-    const contactId = new ObjectId(req.params.id);
-    const result = await mongodb.getDatabase().db().collection('contacts').find({ _id: contactId });
-    result.toArray()
-        .then((contacts) => {
-            res.setHeader('Content-Type', 'application/json');
-            res.status(200).json(contacts[0]);
-        })
-        .catch((err) => {
-            res.status(500).json({ message: 'Could not find contacts.' });
-        });
-}
+const show = async (req, res) => {
+  try {
+    //#swagger.tags = ['Contacts']
+    const userId = req.params.id;
+    const result = await getSingle('contacts', userId);
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const create = async (req, res) => {
+  try {
+    //#swagger.tags = ['Contacts']
+    const { firstName, lastName, phone, email, favoriteColor, birthday } =
+      req.body;
+    const user = { firstName, lastName, phone, email, favoriteColor, birthday };
+    await insertData('contacts', user);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Error creating user' });
+  }
+};
+
+const update = async (req, res) => {
+  try {
+    //#swagger.tags = ['Contacts']
+    const userId = req.params.id;
+    const { firstName, lastName, phone, email, favoriteColor, birthday } =
+      req.body;
+    const user = { firstName, lastName, phone, email, favoriteColor, birthday };
+
+    const result = await updateData('contacts', userId, user);
+    if (result) {
+      res.status(200).json(result);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const remove = async (req, res) => {
+  try {
+    //#swagger.tags = ['Contacts']
+    const userId = req.params.id;
+    const result = await deleteData('contacts', userId);
+    if (result) {
+      res.status(200).json({ message: 'User deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 module.exports = {
-    getAll,
-    getSingle
-}
-
+  index,
+  show,
+  create,
+  update,
+  remove,
+};
+ 
