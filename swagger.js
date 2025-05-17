@@ -1,11 +1,14 @@
 const swaggerAutogen = require('swagger-autogen')();
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const doc = {
   info: {
     title: 'Contacts API',
     description: 'API for managing contacts cse341 first project',
   },
-  host: 'localhost:3000',
+  host: process.env.APP_URL,
   schemes: ['http', 'https'],
 };
 
