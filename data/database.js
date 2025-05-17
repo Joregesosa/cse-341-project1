@@ -26,7 +26,7 @@ const getDatabase = () => {
     throw new Error('Database not initialized!');
   }
   return database;
-};
+}; 
 
 const getAll = async (collectionName) => {
   try {
@@ -101,5 +101,5 @@ module.exports = {
   getSingle,
   insertData,
   updateData,
-  deleteData,
+  deleteData, 
 };

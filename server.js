@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const { initDb } = require('./data/database');
 
-app.use(express.json());
+app.use(express.json()); 
 
 app.use((_, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,7 +21,12 @@ app.use((_, res, next) => {
 
 app.use('/', require('./routes'));
 
-initDb((err) => {
+initDb((err) => { 
+  
+app.use('/', require('./routes'));
+
+mongodb.initDb((err) => { 
+  
   if (err) {
     console.error(err);
   } else {

@@ -1,4 +1,4 @@
-const {
+ const {
   getAll,
   getSingle,
   insertData,
@@ -85,3 +85,4 @@ module.exports = {
   update,
   remove,
 };
+ 
